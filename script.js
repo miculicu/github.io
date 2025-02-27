@@ -118,20 +118,52 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
   });
 });
 
-/********* FORM SUBMISSION, CONFETTI & BALLOON CELEBRATION *********/
+
+
+/********* FORM SUBMISSION, GOOGLE SHEETS, CONFETTI & BALLOON CELEBRATION *********/
 document.getElementById("dateForm").addEventListener("submit", (e) => {
   e.preventDefault();
-  // Hide the form
+
+  // Gather selected festival dates from checkboxes
+  let selectedDates = [];
+  document.querySelectorAll('input[name="festivalDate"]:checked').forEach((checkbox) => {
+    selectedDates.push(checkbox.value);
+  });
+
+  if (selectedDates.length === 0) {
+    alert("Bitte wähle mindestens ein Datum!");
+    return;
+  }
+
+  // Send the data to Google Sheets via your Apps Script Web App URL
+  fetch("https://script.google.com/macros/s/AKfycbzYrDz9u7O5lvIroOsTsM2Vl-GR-xaAHvDOkc-CEAd31D3O6vlFAs-E0V-CHEucsMWBIw/exec", {
+    method: "POST",
+    mode: "no-cors", // Use no-cors mode for Apps Script web apps
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      festivalDate: selectedDates.join(", ")
+    })
+  })
+    .then(() => {
+      console.log("Data sent to Google Sheets");
+    })
+    .catch((error) => {
+      console.error("Error sending data:", error);
+    });
+
+  // Hide the form immediately after submission
   document.getElementById("festivalForm").style.display = "none";
-  
+
   // Launch confetti using canvas-confetti
   confetti({
     particleCount: 100,
     spread: 70,
     origin: { y: 0.6 }
   });
-  
-  // Create a balloon effect from the bottom upward
+
+  // Create balloon effect from the bottom upward
   for (let i = 0; i < 10; i++) {
     let balloon = document.createElement("div");
     balloon.textContent = "🎈";
@@ -150,8 +182,8 @@ document.getElementById("dateForm").addEventListener("submit", (e) => {
       onComplete: () => { balloon.remove(); }
     });
   }
-  
-  // After the celebration, show the thank you message
+
+  // After the celebration, show the thank you message after a short delay
   setTimeout(() => {
     document.getElementById("thankYou").style.display = "block";
   }, 3000);
