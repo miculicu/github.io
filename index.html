@@ -1,152 +1,54 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Best Day of the Year</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 50px;
-      background-color: #f0f8ff;
-    }
-
-    h1 {
-      font-size: 2rem;
-    }
-
-    .options {
-      margin: 20px 0;
-    }
-
-    .options label {
-      display: block;
-      margin: 10px 0;
-      font-size: 1.2rem;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 1.1rem;
-      cursor: pointer;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-
-    /* Confetti styles */
-    .confetti {
-      position: fixed;
-      width: 10px;
-      height: 10px;
-      background-color: red;
-      z-index: 9999;
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      0% {
-        transform: translateY(-100vh) rotate(0deg);
-      }
-      100% {
-        transform: translateY(100vh) rotate(720deg);
-      }
-    }
-
-    /* Balloon styles */
-    .balloon {
-      width: 30px;
-      height: 40px;
-      background-color: pink;
-      border-radius: 50% 50% 50% 50%;
-      position: fixed;
-      bottom: -50px;
-      animation: float 5s ease-in infinite;
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(0) translateX(0);
-      }
-      50% {
-        transform: translateY(-100vh) translateX(50px);
-      }
-      100% {
-        transform: translateY(0) translateX(0);
-      }
-    }
-  </style>
+  <title>Festival of Love</title>
+  <!-- Link to external CSS -->
+  <link rel="stylesheet" href="style.css">
+  <!-- External libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
 </head>
 <body>
-
-  <h1>When do you want the best day of the year to take place?</h1>
-
-  <form id="dateForm" class="options">
-    <label><input type="checkbox" name="date" value="19.7"> 19.7</label>
-    <label><input type="checkbox" name="date" value="12.7"> 12.7</label>
-    <label><input type="checkbox" name="date" value="13.9"> 13.9</label>
-    <button type="submit">Submit</button>
-  </form>
-
-  <p id="response"></p>
-
-  <script>
-    // Confetti animation
-    function createConfetti() {
-      for (let i = 0; i < 100; i++) {
-        const confetti = document.createElement('div');
-        confetti.classList.add('confetti');
-        confetti.style.left = Math.random() * 100 + 'vw';
-        confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
-        confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
-        document.body.appendChild(confetti);
-
-        setTimeout(() => {
-          confetti.remove();
-        }, 5000);
-      }
-    }
-
-    // Balloon animation
-    function createBalloons() {
-      for (let i = 0; i < 5; i++) {
-        const balloon = document.createElement('div');
-        balloon.classList.add('balloon');
-        balloon.style.left = Math.random() * 100 + 'vw';
-        balloon.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
-        balloon.style.animationDuration = Math.random() * 3 + 4 + 's';
-        document.body.appendChild(balloon);
-
-        setTimeout(() => {
-          balloon.remove();
-        }, 7000);
-      }
-    }
-
-    // Run animations on page load
-    window.onload = () => {
-      createConfetti();
-      createBalloons();
-    };
-
-    // Form submission handling
-    document.getElementById('dateForm').addEventListener('submit', function(event) {
-      event.preventDefault();
-      const selected = [];
-      document.querySelectorAll('input[name="date"]:checked').forEach((checkbox) => {
-        selected.push(checkbox.value);
-      });
-
-      const response = document.getElementById('response');
-      if (selected.length > 0) {
-        response.textContent = `You selected: ${selected.join(', ')}`;
-      } else {
-        response.textContent = 'Please select at least one date!';
-      }
-    });
-  </script>
-
+  <div id="clouds"></div>
+  <!-- Festival SVG always visible -->
+  <div id="festivalText">
+    <img src="path4.svg" alt="Festival der Liebe">
+  </div>
+  <!-- Centered heart container -->
+  <div id="heartScreen">
+    <div id="heartContainer">
+      <div class="heart">❤️</div>
+    </div>
+  </div>
+  
+  <!-- Hidden form that will appear after heart expansion -->
+  <div id="festivalForm">
+    <form id="dateForm" action="https://formspree.io/f/xldgqevk" method="POST">
+      <p>Wann soll das Festival der Liebe stattfinden?</p>
+      <label>
+        <input type="checkbox" name="festivalDate" value="2025-03-01">
+        1. März 2025
+      </label><br>
+      <label>
+        <input type="checkbox" name="festivalDate" value="2025-04-01">
+        1. April 2025
+      </label><br>
+      <label>
+        <input type="checkbox" name="festivalDate" value="2025-05-01">
+        1. Mai 2025
+      </label><br><br>
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+  
+  <!-- Thank you message in a white box -->
+  <div id="thankYou">
+    Danke. Mehr Informationen bald auf dieser Website. Stay tuna ;)
+  </div>
+  
+  <!-- Link to external JavaScript -->
+  <script src="script.js"></script>
 </body>
 </html>
