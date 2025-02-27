@@ -1,0 +1,75 @@
+/* Global reset and styling for html and body */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+/* Clouds container styling */
+#clouds {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Festival text (SVG) positioning */
+#festivalText {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 12;
+}
+#festivalText img {
+  width: 350px;
+}
+
+/* Center the heart container */
+#heartScreen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  cursor: pointer;
+}
+
+/* Base size of the heart */
+#heartContainer {
+  display: inline-block;
+  transform: scale(1);
+}
+
+/* Heart styling */
+.heart {
+  font-size: 100px;
+  user-select: none;
+}
+
+/* Styling for the form and thank you message */
+#festivalForm, #thankYou {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  z-index: 15;
+  background-color: rgba(255,255,255,0.95);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  font-family: sans-serif;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Thank you text styling */
+#thankYou {
+  font-size: 24px;
+}
