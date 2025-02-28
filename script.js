@@ -1,3 +1,24 @@
+/********* UTILITY FUNCTIONS *********/
+// Set a cookie with a given name, value, and expiration in seconds
+function setCookie(name, value, seconds) {
+  document.cookie = name + "=" + encodeURIComponent(value) + "; max-age=" + seconds + "; path=/";
+}
+
+// Check if a cookie exists (returns true if found)
+function hasCookie(name) {
+  return document.cookie.split(';').some(c => c.trim().startsWith(name + '='));
+}
+
+/********* INITIAL SETUP ON DOM LOAD *********/
+document.addEventListener("DOMContentLoaded", function() {
+  // If the user has already submitted, ensure UI is set correctly.
+  if (hasCookie("submitted")) {
+    document.getElementById("heartScreen").style.display = "none";
+    document.getElementById("festivalForm").style.display = "none";
+    document.getElementById("thankYou").style.display = "block";
+  }
+});
+
 /********* GLOBAL STATE *********/
 let isHovered = false;
 let animationStarted = false;
@@ -96,17 +117,26 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
       ease: "power2.out"
     });
   }
-  
-  // Prevent multiple activations
+
+  // If user has already submitted (cookie exists), immediately show thank-you message.
+  if (hasCookie("submitted")) {
+    document.getElementById("heartScreen").style.display = "none";
+    document.getElementById("festivalForm").style.display = "none";
+    document.getElementById("thankYou").style.display = "block";
+    return;
+  }
+
+  // Prevent multiple activations of the expansion animation
   if (animationStarted) return;
   animationStarted = true;
   
-  // Animate the heart expansion and fade out
+  // Animate heart expansion and fade out
   gsap.to(heartContainer, {
     scale: 10,
     duration: 1.5,
     ease: "power2.inOut",
     onComplete: () => {
+      // Hide heart container and show the form if not already submitted.
       document.getElementById("heartScreen").style.display = "none";
       document.getElementById("festivalForm").style.display = "block";
     }
@@ -118,42 +148,30 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
   });
 });
 
+/********* FORM SUBMISSION, CONFETTI, BALLOON CELEBRATION & COOKIE SETTING *********/
+document.getElementById("dateForm").addEventListener("submit", function(e) {
+  e.preventDefault(); // Prevent default form submission
 
+  // Gather the form data (including the new name field)
+  const form = e.target;
+  const formData = new FormData(form);
 
-/********* FORM SUBMISSION, GOOGLE SHEETS, CONFETTI & BALLOON CELEBRATION *********/
-document.getElementById("dateForm").addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  // Gather selected festival dates from checkboxes
-  let selectedDates = [];
-  document.querySelectorAll('input[name="festivalDate"]:checked').forEach((checkbox) => {
-    selectedDates.push(checkbox.value);
+  // Send the form data using fetch (using no-cors for Formspree)
+  fetch(form.action, {
+    method: "POST",
+    body: formData,
+    mode: "no-cors"  // Using no-cors mode so that the request is sent without CORS issues
+  })
+  .then(() => {
+    console.log("Form data successfully sent.");
+    // Set a cookie so the user is remembered as having submitted (1 year = 31536000 seconds)
+    setCookie("submitted", "true", 31536000);
+  })
+  .catch((error) => {
+    console.error("Error sending form data:", error);
   });
 
-  if (selectedDates.length === 0) {
-    alert("Bitte wähle mindestens ein Datum!");
-    return;
-  }
-
-  // Send the data to Google Sheets via your Apps Script Web App URL
-  fetch("https://script.google.com/macros/s/AKfycbzYrDz9u7O5lvIroOsTsM2Vl-GR-xaAHvDOkc-CEAd31D3O6vlFAs-E0V-CHEucsMWBIw/exec", {
-    method: "POST",
-    mode: "no-cors", // Use no-cors mode for Apps Script web apps
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      festivalDate: selectedDates.join(", ")
-    })
-  })
-    .then(() => {
-      console.log("Data sent to Google Sheets");
-    })
-    .catch((error) => {
-      console.error("Error sending data:", error);
-    });
-
-  // Hide the form immediately after submission
+  // Hide the form
   document.getElementById("festivalForm").style.display = "none";
 
   // Launch confetti using canvas-confetti
@@ -163,7 +181,7 @@ document.getElementById("dateForm").addEventListener("submit", (e) => {
     origin: { y: 0.6 }
   });
 
-  // Create balloon effect from the bottom upward
+  // Create a balloon effect from the bottom upward
   for (let i = 0; i < 10; i++) {
     let balloon = document.createElement("div");
     balloon.textContent = "🎈";
@@ -183,7 +201,7 @@ document.getElementById("dateForm").addEventListener("submit", (e) => {
     });
   }
 
-  // After the celebration, show the thank you message after a short delay
+  // After the celebration, show the thank-you message ("stay tuna")
   setTimeout(() => {
     document.getElementById("thankYou").style.display = "block";
   }, 3000);
