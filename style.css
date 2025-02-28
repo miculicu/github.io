@@ -24,7 +24,6 @@ html, body {
   position: fixed;
   top: 20px;
   left: 50%;
-  transform: translateX(-50%);
   z-index: 12;
 }
 #festivalText img {
