@@ -21,6 +21,34 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
+// Set the target date for Tuesday, March 4th, 2025 (midnight)
+const targetDate = new Date('March 4, 2025 00:00:00');
+
+// Function to update the countdown timer
+function updateCountdown() {
+  const now = new Date();
+  const diff = targetDate - now;
+  
+  // If the time is up, show a message and stop updating.
+  if (diff <= 0) {
+    document.getElementById('countdown').textContent = "Survey Closed";
+    clearInterval(countdownInterval);
+    return;
+  }
+  
+  // Calculate remaining days, hours, and minutes
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  
+  // Update the timer's content
+  document.getElementById('countdown').textContent = `${days}d ${hours}h ${minutes}m`;
+}
+
+// Update every second for smooth countdown
+updateCountdown();
+const countdownInterval = setInterval(updateCountdown, 1000);
+
 /********* GLOBAL STATE *********/
 let isHovered = false;
 let animationStarted = false;
