@@ -11,10 +11,12 @@ function hasCookie(name) {
 
 /********* INITIAL SETUP ON DOM LOAD *********/
 document.addEventListener("DOMContentLoaded", function() {
-  // If the user has already submitted, ensure UI is set correctly.
+  // If the user has already submitted, update UI immediately.
   if (hasCookie("submitted")) {
     document.getElementById("heartScreen").style.display = "none";
     document.getElementById("festivalForm").style.display = "none";
+    // Set the message for users who already voted.
+    document.getElementById("thankYou").innerHTML = "Du hast bereits abgestimmt! Mehr Informationen bald auf dieser Website. Stay tuna ;)";
     document.getElementById("thankYou").style.display = "block";
   }
 });
@@ -201,8 +203,9 @@ document.getElementById("dateForm").addEventListener("submit", function(e) {
     });
   }
 
-  // After the celebration, show the thank-you message ("stay tuna")
+  // After the celebration, update the thank-you message for a first-time submission
   setTimeout(() => {
+    document.getElementById("thankYou").innerHTML = "Danke! Mehr Informationen bald auf dieser Website. Stay tuna ;)";
     document.getElementById("thankYou").style.display = "block";
   }, 3000);
 });
