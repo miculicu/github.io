@@ -16,9 +16,8 @@
     function hasCookie(name) {
       return document.cookie.split(';').some(c => c.trim().startsWith(name + '='));
     }
-    // If the user has already submitted, hide the heart and form immediately.
+    // If the user has already submitted, immediately hide heart and form and show the "already voted" message.
     if (hasCookie("submitted")) {
-      // We can add a style to hide the elements. Using CSS here is immediate.
       document.write('<style>#heartScreen, #festivalForm { display: none !important; } #thankYou { display: block !important; }</style>');
     }
   </script>
@@ -45,15 +44,15 @@
       <p>Wann soll das Festival der Liebe stattfinden?</p>
       <label>
         <input type="checkbox" name="festivalDate" value="2025-07-12">
-        12. Juli 2025
+        12.7.2025
       </label><br>
       <label>
         <input type="checkbox" name="festivalDate" value="2025-07-19">
-        19. Juli 2025
+        19.7.2025
       </label><br>
       <label>
         <input type="checkbox" name="festivalDate" value="2025-09-13">
-        13. September 2025
+        13.9.2025
       </label><br><br>
       <button type="submit">Submit</button>
     </form>
@@ -61,7 +60,7 @@
   
   <!-- Thank you message container -->
   <div id="thankYou" style="display: none;">
-    Du hast bereits abgestimmt. Mehr Informationen bald auf dieser Website. Stay tuna ;)
+    <!-- This text will be updated by JavaScript based on the situation. -->
   </div>
   
   <!-- Link to external JavaScript -->
