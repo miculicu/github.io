@@ -1,65 +1,7 @@
-/********* UTILITY FUNCTIONS *********/
-// Set a cookie with a given name, value, and expiration in seconds
-function setCookie(name, value, seconds) {
-  document.cookie = name + "=" + encodeURIComponent(value) + "; max-age=" + seconds + "; path=/";
-}
-
-// Check if a cookie exists (returns true if found)
-function hasCookie(name) {
-  return document.cookie.split(';').some(c => c.trim().startsWith(name + '='));
-}
-
-/********* INITIAL SETUP ON DOM LOAD *********/
-document.addEventListener("DOMContentLoaded", function() {
-  // If the user has already submitted, update UI immediately.
-  if (hasCookie("submitted")) {
-    document.getElementById("heartScreen").style.display = "none";
-    document.getElementById("festivalForm").style.display = "none";
-    // Set the message for users who already voted.
-    document.getElementById("thankYou").innerHTML = "Du hast bereits abgestimmt! Mehr Informationen bald auf dieser Website. Stay tuna ;)";
-    document.getElementById("thankYou").style.display = "block";
-  }
-});
-
-// Set the target date for Tuesday, March 4th, 2025 (midnight)
-const targetDate = new Date('March 4, 2025 00:00:00');
-
-function updateCountdown() {
-  const now = new Date();
-  const diff = targetDate - now;
-
-  if (diff <= 0) {
-    document.getElementById('countdown').textContent = "Survey Closed";
-    clearInterval(countdownInterval);
-    return;
-  }
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-  document.getElementById('countdown').textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-}
-
-updateCountdown();
-const countdownInterval = setInterval(updateCountdown, 1000);
-
 
 /********* GLOBAL STATE *********/
 let isHovered = false;
 let animationStarted = false;
-
-/********* BACKGROUND COLOR ANIMATION *********/
-const bgTimeline = gsap.timeline({repeat: -1, yoyo: true});
-bgTimeline.to(document.body, {
-  backgroundColor: "#ff6666",
-  duration: 15,
-  ease: "none"
-});
-function updateBgSpeed() {
-  bgTimeline.timeScale(isHovered ? 2 : 1);
-}
 
 /********* HEART PULSATION *********/
 const heart = document.querySelector('.heart');
@@ -74,14 +16,13 @@ let heartPulse = gsap.to(heart, {
 
 document.getElementById("heartScreen").addEventListener("mouseenter", () => {
   isHovered = true;
-  updateBgSpeed();
   heartPulse.timeScale(2);
   gsap.to(heartContainer, { scale: 2, duration: 0.5, ease: "power2.out" });
   gsap.to(heart, { filter: "drop-shadow(0 0 20px #ff6666)", duration: 0.5 });
 });
+
 document.getElementById("heartScreen").addEventListener("mouseleave", () => {
   isHovered = false;
-  updateBgSpeed();
   heartPulse.timeScale(1);
   gsap.to(heartContainer, { scale: 1, duration: 0.5, ease: "power2.out" });
   gsap.to(heart, { filter: "drop-shadow(0 0 0px #ff6666)", duration: 0.5 });
@@ -110,7 +51,7 @@ function spawnCloud() {
     cloud.style.left = startX + "px";
   }
   let duration = Math.random() * 20 + 20;
-  if (isHovered) { duration /= 1.5; }
+ 
   gsap.to(cloud, {
     x: endX - startX,
     duration: duration,
@@ -124,46 +65,96 @@ function spawnCloud() {
   setTimeout(spawnCloud, nextDelay);
 }
 spawnCloud();
+// Global variable to hold the current message container
+// Global variable to hold the static message container
+let staticMessageContainer = null;
 
-/********* HEART CLICK ANIMATION & PARTICLE EFFECT *********/
 document.getElementById("heartScreen").addEventListener("click", (e) => {
-  // Spawn heart particles at the click position
-  for (let i = 0; i < 20; i++) {
-    const particle = document.createElement("div");
-    particle.textContent = "❤️";
-    particle.style.position = "fixed";
-    particle.style.left = e.clientX + "px";
-    particle.style.top = e.clientY + "px";
-    particle.style.fontSize = "20px";
-    particle.style.zIndex = "12";
-    document.body.appendChild(particle);
-    gsap.to(particle, {
-      x: (Math.random() - 0.5) * 400,
-      y: (Math.random() - 0.5) * 400,
-      duration: 1.2,
-      ease: "power2.out"
-    });
-  }
-
-  // If user has already submitted (cookie exists), immediately show thank-you message.
-  if (hasCookie("submitted")) {
-    document.getElementById("heartScreen").style.display = "none";
-    document.getElementById("festivalForm").style.display = "none";
-    document.getElementById("thankYou").style.display = "block";
-    return;
-  }
-
-  // Prevent multiple activations of the expansion animation
+  // Prevent multiple activations
   if (animationStarted) return;
   animationStarted = true;
   
-  // Animate heart expansion and fade out
+  // Define hearts with emoji, position, full color, a lighter tone, and the ID of associated content
+  const heartsData = [
+    { emoji: "💛", top: "20%", color: "#ffff00", lightColor: "#ffffe0", contentId: "content-yellow" },
+    { emoji: "💙", top: "40%", color: "#0000ff", lightColor: "#add8e6", contentId: "content-blue" },
+    { emoji: "💚", top: "80%", color: "#00ff00", lightColor: "#90ee90", contentId: "content-green" },
+    { emoji: "💖", top: "60%", color: "#ff69b4", lightColor: "#ffc0cb", contentId: "content-pink" }
+  ];
+  
+  heartsData.forEach((data) => {
+    const leftHeart = document.createElement("div");
+    leftHeart.textContent = data.emoji;
+    leftHeart.style.position = "fixed";
+    leftHeart.style.left = "10px";
+    leftHeart.style.top = data.top;
+    leftHeart.style.fontSize = "40px";
+    leftHeart.style.cursor = "pointer";
+    leftHeart.style.zIndex = "15";
+    leftHeart.style.opacity = "0"; // Start hidden for fade-in
+    document.body.appendChild(leftHeart);
+    
+    // Fade in effect for the heart
+    gsap.to(leftHeart, { opacity: 1, duration: 1, ease: "power1.in" });
+    
+    // Hover effect: enlarge on mouseenter and revert on mouseleave
+    leftHeart.addEventListener("mouseenter", () => {
+      gsap.to(leftHeart, { scale: 1.5, duration: 0.3, ease: "power1.out" });
+    });
+    leftHeart.addEventListener("mouseleave", () => {
+      gsap.to(leftHeart, { scale: 1, duration: 0.3, ease: "power1.out" });
+    });
+    
+    // When a left heart is clicked...
+    leftHeart.addEventListener("click", () => {
+      // If the static container does not exist, create it
+      if (!staticMessageContainer) {
+        staticMessageContainer = document.createElement("div");
+        staticMessageContainer.id = "staticMessageContainer";
+        staticMessageContainer.style.position = "fixed";
+        // Position: start at 1/3 of the viewport from the top and stretch to the bottom
+        staticMessageContainer.style.top = "18%";
+        staticMessageContainer.style.left = "16.67%"; // centers a 66.67% width container
+        staticMessageContainer.style.width = "66.67%";
+        staticMessageContainer.style.bottom = "0";
+        staticMessageContainer.style.backgroundColor = "white";
+        staticMessageContainer.style.overflowY = "auto"; // scrollable vertically
+        staticMessageContainer.style.padding = "20px";
+        // Optional: set a border radius and shadow if desired
+        staticMessageContainer.style.borderRadius = "10px";
+        staticMessageContainer.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
+        staticMessageContainer.style.opacity = "0";
+        staticMessageContainer.style.zIndex = "20";
+        document.body.appendChild(staticMessageContainer);
+        gsap.to(staticMessageContainer, { opacity: 1, duration: 1 });
+      }
+      
+      // Update the content of the static container with the hidden HTML block
+      const contentEl = document.getElementById(data.contentId);
+      if (contentEl) {
+        staticMessageContainer.innerHTML = contentEl.innerHTML;
+      } else {
+        staticMessageContainer.innerHTML = `<p>Error: Content not found</p>`;
+      }
+      
+      // Animate the background color gently to the heart's light color
+      gsap.to(document.body, {
+        backgroundColor: data.lightColor,
+        duration: 2,
+        ease: "power2.inOut"
+      });
+    });
+  });
+  
+  gsap.to("#logo", { opacity: 1, duration: 1, ease: "power1.in" });
+   
+  // Animate main heart expansion and fade out
   gsap.to(heartContainer, {
     scale: 10,
     duration: 1.5,
     ease: "power2.inOut",
     onComplete: () => {
-      // Hide heart container and show the form if not already submitted.
+      // Hide the main heart screen and show the festival form (or next content)
       document.getElementById("heartScreen").style.display = "none";
       document.getElementById("festivalForm").style.display = "block";
     }
@@ -175,62 +166,12 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
   });
 });
 
-/********* FORM SUBMISSION, CONFETTI, BALLOON CELEBRATION & COOKIE SETTING *********/
-document.getElementById("dateForm").addEventListener("submit", function(e) {
-  e.preventDefault(); // Prevent default form submission
 
-  // Gather the form data (including the new name field)
-  const form = e.target;
-  const formData = new FormData(form);
 
-  // Send the form data using fetch (using no-cors for Formspree)
-  fetch(form.action, {
-    method: "POST",
-    body: formData,
-    mode: "no-cors"  // Using no-cors mode so that the request is sent without CORS issues
-  })
-  .then(() => {
-    console.log("Form data successfully sent.");
-    // Set a cookie so the user is remembered as having submitted (1 year = 31536000 seconds)
-    setCookie("submitted", "true", 31536000);
-  })
-  .catch((error) => {
-    console.error("Error sending form data:", error);
-  });
 
-  // Hide the form
-  document.getElementById("festivalForm").style.display = "none";
 
-  // Launch confetti using canvas-confetti
-  confetti({
-    particleCount: 100,
-    spread: 70,
-    origin: { y: 0.6 }
-  });
 
-  // Create a balloon effect from the bottom upward
-  for (let i = 0; i < 10; i++) {
-    let balloon = document.createElement("div");
-    balloon.textContent = "🎈";
-    balloon.style.position = "fixed";
-    balloon.style.left = Math.random() * window.innerWidth + "px";
-    balloon.style.bottom = "-50px";
-    balloon.style.fontSize = (Math.random() * 30 + 30) + "px";
-    balloon.style.opacity = 1;
-    balloon.style.zIndex = "20";
-    document.body.appendChild(balloon);
-    gsap.to(balloon, {
-      y: -window.innerHeight - 50,
-      opacity: 0,
-      duration: Math.random() * 3 + 3,
-      ease: "power1.out",
-      onComplete: () => { balloon.remove(); }
-    });
-  }
 
-  // After the celebration, update the thank-you message for a first-time submission
-  setTimeout(() => {
-    document.getElementById("thankYou").innerHTML = "Danke! Mehr Informationen bald auf dieser Website. Stay tuna ;)";
-    document.getElementById("thankYou").style.display = "block";
-  }, 3000);
-});
+
+
+

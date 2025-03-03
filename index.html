@@ -9,27 +9,23 @@
   <!-- External libraries -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
-  
-  <!-- Inline script to check cookie and hide elements early -->
-  <script>
-    // Quick cookie check function
-    function hasCookie(name) {
-      return document.cookie.split(';').some(c => c.trim().startsWith(name + '='));
-    }
-    // If the user has already submitted, immediately hide heart and form and show the "already voted" message.
-    if (hasCookie("submitted")) {
-      document.write('<style>#heartScreen, #festivalForm { display: none !important; } #thankYou { display: block !important; }</style>');
-    }
-  </script>
 </head>
+
+
 <body>
-  <div id="countdown"></div>
+
+<!-- Link to external JavaScript -->
   
   <div id="clouds"></div>
   <!-- Festival SVG always visible -->
-  <div id="festivalText">
-    <img src="path4.svg" alt="Festival der Liebe">
-  </div>
+<div id="logo" style="opacity:0; position:fixed; top:10px; left:50%; transform:translateX(-50%); z-index:30;">
+  <img src="logo.svg" alt="Festival der Liebe" style="max-width:100%; height:auto;">
+</div>
+
+
+<div id="version-date">Versionsdatum: 4.3.2025</div>
+
+  
   <!-- Centered heart container -->
   <div id="heartScreen">
     <div id="heartContainer">
@@ -37,38 +33,38 @@
     </div>
   </div>
   
-  <!-- Hidden form that will appear after heart expansion -->
-  <div id="festivalForm">
-    <form id="dateForm" action="https://formspree.io/f/xldgqevk" method="POST">
-      <p>Wann soll das Festival der Liebe stattfinden?</p>
-      <p>Bitte gebe alle möglichen Termine an damit möglichst viele teilnehmen können:</p>
-      
-      <label>
-        <input type="checkbox" name="festivalDate" value="2025-07-12">
-        12.7.2025
-      </label><br>
-      <label>
-        <input type="checkbox" name="festivalDate" value="2025-07-19">
-        19.7.2025
-      </label><br>
-      <label>
-        <input type="checkbox" name="festivalDate" value="2025-09-13">
-        13.9.2025
-      </label><br><br>
+  <div id="content-yellow" style="display:none;">
+  <h2>Anlass</h2>
+  <h4>Was ist das Fest der Liebe? </h4>
 
-      <p>Bitte gib deinen Namen ein:</p>
-      <input type="text" name="name" placeholder="Dein Name" required><br><br>
-      
-      <button type="submit">Submit</button>
-    </form>
-  </div>
-  
-  <!-- Thank you message container -->
-  <div id="thankYou" style="display: none;">
-    <!-- This text will be updated by JavaScript based on the situation. -->
-  </div>
-  
-  <!-- Link to external JavaScript -->
+<p>Hierzu Ausschnitte aus Paulines Tagebuch. Der erste Eintrag in dem Michael vorkommt (November 2016) ist noch relativ trocken: <i>"Am Donnerstag habe ich nett mit Felix und Michael Algebra gemacht" </i>. 
+Zwei Monate und mehrere Einträge später endete der Eintrag vom 8.1.2017 mit <i>"[...] wir meinten beide, dass wir einander cool finden und gerne eine Art Beziehung ausprobieren wollen =)" </i> </p>
+
+<p>Das Fest der Liebe ist ein Fest, das unsere Liebe und Freundschaft feiert.</p>
+
+<h4> Was hat es mit der Website auf sich</h4>
+  <p>
+ In den nächsten Tagen und Wochen wird sich diese Website mit allen relevanten Informationen füllen. Stay tuna
+</p>
+
+</div>
+<div id="content-blue" style="display:none;">
+  <h2>Location und Ablauf</h2>
+  <p> Wird zeitnah bekannt gegeben</p>
+
+</div>
+<div id="content-green" style="display:none;">
+  <h2>Grünes Herz</h2>
+  <p>...steht für Kraft! :)</p>
+  <img src="habeck.jpg" alt="Habeck" style="max-width:100%; display:block; margin:20px auto;">
+</div>
+<div id="content-pink" style="display:none;">
+  <h2>Zu- und Absagen</h2>
+  <p> Das wird der Anmeldebereich. </p>
+</div>
+
+
   <script src="script.js"></script>
+  
 </body>
 </html>
