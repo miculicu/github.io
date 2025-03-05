@@ -38,9 +38,9 @@ function showHeartMessage() {
   const lastClick = getCookie("lastHeartClick");
   let message;
   if (lastClick === versionDate) {
-    message = "Klick auf das Herz, um mehr zu erfahren";
+    message = "Klick auf das Herz, um mehr zu erfahren!";
   } else {
-    message = "Klick auf das Herz, um mehr zu erfahren. Es gibt neue Sachen zu entdecken!";
+    message = "Klick auf das Herz. Es gibt neue Sachen zu entdecken!";
   }
   
   // Erstelle das Nachrichten-Element und style es
@@ -69,7 +69,7 @@ function showRubrikenMessage() {
   // Erstelle das Nachrichten-Element
   const rubMessage = document.createElement("div");
   rubMessage.id = "rubrikenMessage";
-  rubMessage.textContent = "Klicke die verschiedenen Herzchen an, um die Rubriken zu entdecken!";
+  rubMessage.textContent = "Klicke die Herzchen an, um die Rubriken zu entdecken!";
   rubMessage.style.position = "fixed";
   rubMessage.style.top = "85%"; // ähnlich wie beim Eingangs-Herz
   rubMessage.style.left = "50%";
