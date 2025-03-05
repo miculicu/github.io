@@ -6,11 +6,122 @@ html, body {
   height: 100%;
   overflow: hidden;
   background-color: #ffffff;
+  font-family: sans-serif;
+  line-height: 1.5;
+  font-size: 16px; /* Basis-Schriftgröße */
+  color: #333;
 }
 
-h1,h2,h3,h4,h5,h6{
-	font-family: 'Caveat', cursive;
+.headline {
+  text-align: center;
+  font-size: 1.7em;           /* Groß, um Aufmerksamkeit zu erzeugen */
+  font-weight: bold;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  margin: 30px auto;
+  max-width: 90%;
 }
+
+/* Gelbe Headline */
+.headyellow-headline {
+  color: #d3b700;
+  background: linear-gradient(to right, #fff9e6, #fff3b8);
+}
+
+/* Blaue Headline */
+.headblue-headline {
+  color: #3498db;
+  background: linear-gradient(to right, #e6f7ff, #b3e0ff);
+}
+
+/* Grüne Headline */
+.headgreen-headline {
+  color: #27ae60;
+  background: linear-gradient(to right, #e6f9e6, #b3e6b3);
+}
+
+/* Pinke Headline */
+.headpink-headline {
+  color: #ff69b4;
+  background: linear-gradient(to right, #ffe6f7, #ffb3e6);
+}
+
+
+
+h2 {
+  font-size: 2em;
+  text-align: center;
+  margin: 40px 0 20px;
+  color: #d3b700;
+  border-bottom: 2px solid #d3b700;
+  padding-bottom: 10px;
+}
+/* Basis-Stil für alle h2-Überschriften */
+h2 {
+  font-size: 2em;
+  text-align: center;
+  margin: 40px 0 20px;
+  border-bottom: 2px solid;
+  padding-bottom: 10px;
+}
+
+/* Spezifische Klassen für die Farben der jeweiligen Herzen */
+.headyellow {
+  color: #d3b700;
+  border-color: #d3b700;
+}
+
+.headblue {
+  color: #3469db;
+  border-color: #3469db;
+}
+
+/* Falls du weitere Bereiche hast, kannst du analog weitere Klassen definieren */
+.headgreen {
+  color: #27ae60;
+  border-color: #27ae60;
+}
+
+.headpink {
+  color: #ff69b4;
+  border-color: #ff69b4;
+}
+
+
+p {
+  font-size: 1.1em;
+  max-width: 800px;
+  margin: 0 auto 40px auto;
+  text-align: justify; /* Blocksatz ähnlich wie in LaTeX */
+}
+
+
+/* Zentrierter Container für den Tagebuchtext */
+.diary-text {
+  white-space: pre-line;
+}
+
+/* Formatierung für die Tagebucheinträge */
+.diary-entry {
+  font-size: 1.2em;
+  font-style: italic;
+  text-align: center;
+  margin: 20px auto;
+  max-width: 700px;
+  padding: 10px 20px;
+  background-color: #f9f9f9;
+  border-left: 4px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Formatierung der nummerierten Liste */
+.reasons-list {
+  text-align: left;
+  margin-left: 20px;
+}
+
 
 #countdown {
   position: fixed;
@@ -65,7 +176,7 @@ h1,h2,h3,h4,h5,h6{
 
 /* Heart styling */
 .heart {
-  font-size: 100px;
+  font-size: 150px;
   user-select: none;
 }
 

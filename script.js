@@ -3,11 +3,92 @@
 let isHovered = false;
 let animationStarted = false;
 
+/********* COOKIE-FUNKTIONEN *********/
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  const expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  const name = cname + "=";
+  const decodedCookie = decodeURIComponent(document.cookie);
+  const ca = decodedCookie.split(';');
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) === ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) === 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+/********* VERSIONSDATUM ERMITTELN *********/
+// Wir gehen davon aus, dass im Element "#version-date" der Text im Format "Versionsdatum: 4.3.2025" steht.
+const versionText = document.getElementById("version-date").textContent;
+const versionDate = versionText.replace("Versionsdatum:", "").trim();
+
+/********* NACHRICHTS-LOGIK *********/
+function showHeartMessage() {
+  // Hole den gespeicherten Wert aus dem Cookie
+  const lastClick = getCookie("lastHeartClick");
+  let message;
+  if (lastClick === versionDate) {
+    message = "Klick auf das Herz, um mehr zu erfahren";
+  } else {
+    message = "Klick auf das Herz, um mehr zu erfahren. Es gibt neue Sachen zu entdecken!";
+  }
+  
+  // Erstelle das Nachrichten-Element und style es
+  const messageElement = document.createElement("div");
+  messageElement.id = "heartMessage";
+  messageElement.textContent = message;
+  messageElement.style.position = "fixed";
+  messageElement.style.top = "85%"; // etwas oberhalb des Herzens
+  messageElement.style.left = "50%";
+  messageElement.style.transform = "translateX(-50%)";
+  messageElement.style.fontSize = "18px";
+  messageElement.style.fontFamily = "sans-serif";
+  messageElement.style.padding = "10px 20px";
+  messageElement.style.backgroundColor = "rgba(255, 255, 255, 0.8)";
+  messageElement.style.borderRadius = "5px";
+  messageElement.style.zIndex = "11";
+  
+  document.body.appendChild(messageElement);
+}
+
+// Zeige die Nachricht, sobald der DOM geladen ist
+document.addEventListener("DOMContentLoaded", showHeartMessage);
+
+
+function showRubrikenMessage() {
+  // Erstelle das Nachrichten-Element
+  const rubMessage = document.createElement("div");
+  rubMessage.id = "rubrikenMessage";
+  rubMessage.textContent = "Klicke die verschiedenen Herzchen an, um die Rubriken zu entdecken!";
+  rubMessage.style.position = "fixed";
+  rubMessage.style.top = "85%"; // ähnlich wie beim Eingangs-Herz
+  rubMessage.style.left = "50%";
+  rubMessage.style.transform = "translateX(-50%)";
+  rubMessage.style.fontSize = "18px";
+  rubMessage.style.fontFamily = "sans-serif";
+  rubMessage.style.padding = "10px 20px";
+  rubMessage.style.backgroundColor = "rgba(255, 255, 255, 0.8)";
+  rubMessage.style.borderRadius = "5px";
+  rubMessage.style.zIndex = "11";
+  
+  document.body.appendChild(rubMessage);
+}
+
 /********* HEART PULSATION *********/
 const heart = document.querySelector('.heart');
 const heartContainer = document.getElementById('heartContainer');
 let heartPulse = gsap.to(heart, {
-  scale: 1.1,
+  scale: 1.2,
   duration: 0.5,
   repeat: -1,
   yoyo: true,
@@ -30,7 +111,15 @@ document.getElementById("heartScreen").addEventListener("mouseleave", () => {
 
 /********* CLOUD ANIMATIONS *********/
 const cloudEmojis = ["☁️", "🌥️"];
+
 function spawnCloud() {
+  // Wenn der Tab nicht aktiv ist, überprüfe erneut in 1 Sekunde
+  if (document.hidden) {
+    setTimeout(spawnCloud, 1000);
+    return;
+  }
+  
+  // Erstelle und style die Wolke wie bisher
   const cloud = document.createElement("div");
   cloud.classList.add("cloud");
   cloud.textContent = cloudEmojis[Math.floor(Math.random() * cloudEmojis.length)];
@@ -61,27 +150,30 @@ function spawnCloud() {
   gsap.fromTo(cloud, {opacity: 0}, {opacity: 1, duration: 0.5, ease: "power1.in"});
   gsap.to(cloud, {opacity: 0, delay: duration - 3, duration: 3, ease: "power1.out"});
   
+  // Starte den nächsten Cloud-Spawning mit einer zufälligen Verzögerung
   const nextDelay = (Math.random() * 2000 + 1000);
   setTimeout(spawnCloud, nextDelay);
 }
+
 spawnCloud();
+
+
 // Global variable to hold the current message container
 // Global variable to hold the static message container
 let staticMessageContainer = null;
-
-document.getElementById("heartScreen").addEventListener("click", (e) => {
-  // Prevent multiple activations
-  if (animationStarted) return;
-  animationStarted = true;
+// Funktion, die die zusätzlichen Elemente (z. B. Logo und Rand-Herzen) einblendet
+function showAdditionalElements() {
+  // Blende das Logo ein (z. B. mit einer kleinen Verzögerung)
+  gsap.to("#logo", { opacity: 1, duration: 1, ease: "power1.in", delay: 0.1 });
   
-  // Define hearts with emoji, position, full color, a lighter tone, and the ID of associated content
+  // Erstelle die Rand-Herzen und blende sie ein
   const heartsData = [
     { emoji: "💛", top: "20%", color: "#ffff00", lightColor: "#ffffe0", contentId: "content-yellow" },
     { emoji: "💙", top: "40%", color: "#0000ff", lightColor: "#add8e6", contentId: "content-blue" },
     { emoji: "💚", top: "80%", color: "#00ff00", lightColor: "#90ee90", contentId: "content-green" },
     { emoji: "💖", top: "60%", color: "#ff69b4", lightColor: "#ffc0cb", contentId: "content-pink" }
   ];
-  
+
   heartsData.forEach((data) => {
     const leftHeart = document.createElement("div");
     leftHeart.textContent = data.emoji;
@@ -94,10 +186,10 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
     leftHeart.style.opacity = "0"; // Start hidden for fade-in
     document.body.appendChild(leftHeart);
     
-    // Fade in effect for the heart
-    gsap.to(leftHeart, { opacity: 1, duration: 1, ease: "power1.in" });
-    
-    // Hover effect: enlarge on mouseenter and revert on mouseleave
+    // Einblende-Effekt für das Rand-Herz
+    gsap.to(leftHeart, { opacity: 1, duration: 1, ease: "power1.in", delay: 0.2 });
+
+    // Hover-Effekte
     leftHeart.addEventListener("mouseenter", () => {
       gsap.to(leftHeart, { scale: 1.5, duration: 0.3, ease: "power1.out" });
     });
@@ -105,22 +197,20 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
       gsap.to(leftHeart, { scale: 1, duration: 0.3, ease: "power1.out" });
     });
     
-    // When a left heart is clicked...
+    // Klick-Funktionalität des Rand-Herzens
     leftHeart.addEventListener("click", () => {
-      // If the static container does not exist, create it
+      // Beispiel: Anzeige eines statischen Nachrichten-Containers
       if (!staticMessageContainer) {
         staticMessageContainer = document.createElement("div");
         staticMessageContainer.id = "staticMessageContainer";
         staticMessageContainer.style.position = "fixed";
-        // Position: start at 1/3 of the viewport from the top and stretch to the bottom
         staticMessageContainer.style.top = "18%";
-        staticMessageContainer.style.left = "16.67%"; // centers a 66.67% width container
+        staticMessageContainer.style.left = "16.67%";
         staticMessageContainer.style.width = "66.67%";
         staticMessageContainer.style.bottom = "0";
         staticMessageContainer.style.backgroundColor = "white";
-        staticMessageContainer.style.overflowY = "auto"; // scrollable vertically
+        staticMessageContainer.style.overflowY = "auto";
         staticMessageContainer.style.padding = "20px";
-        // Optional: set a border radius and shadow if desired
         staticMessageContainer.style.borderRadius = "10px";
         staticMessageContainer.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
         staticMessageContainer.style.opacity = "0";
@@ -129,7 +219,6 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
         gsap.to(staticMessageContainer, { opacity: 1, duration: 1 });
       }
       
-      // Update the content of the static container with the hidden HTML block
       const contentEl = document.getElementById(data.contentId);
       if (contentEl) {
         staticMessageContainer.innerHTML = contentEl.innerHTML;
@@ -137,7 +226,7 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
         staticMessageContainer.innerHTML = `<p>Error: Content not found</p>`;
       }
       
-      // Animate the background color gently to the heart's light color
+      // Beispielhafter Hintergrundfarben-Wechsel
       gsap.to(document.body, {
         backgroundColor: data.lightColor,
         duration: 2,
@@ -145,18 +234,39 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
       });
     });
   });
+}
+
+// Modifizierte Event-Listener-Funktion für das große Herz:
+document.getElementById("heartScreen").addEventListener("click", (e) => {
+  if (animationStarted) return;
+  animationStarted = true;
   
-  gsap.to("#logo", { opacity: 1, duration: 1, ease: "power1.in" });
-   
-  // Animate main heart expansion and fade out
+  // Aktualisiere den Cookie, etc.
+  setCookie("lastHeartClick", versionDate, 365);
+  
+  // Blende die Herz-Nachricht aus (sofern vorhanden)
+  gsap.to("#heartMessage", {
+    opacity: 0,
+    duration: 1,
+    ease: "power1.out",
+    onComplete: () => {
+      const msgEl = document.getElementById("heartMessage");
+      if (msgEl) msgEl.remove();
+    }
+  });
+  
+  // Animation: Großes Herz vergrößern und verblassen lassen
   gsap.to(heartContainer, {
     scale: 10,
     duration: 1.5,
     ease: "power2.inOut",
     onComplete: () => {
-      // Hide the main heart screen and show the festival form (or next content)
+      // Verberge das große Herz (falls festivalForm nicht benötigt wird)
       document.getElementById("heartScreen").style.display = "none";
-      document.getElementById("festivalForm").style.display = "block";
+      
+      // Jetzt werden die zusätzlichen Elemente (Logo & Rand-Herzen) eingeblendet
+      showAdditionalElements();
+	  showRubrikenMessage();
     }
   });
   gsap.to(heart, {
@@ -165,6 +275,8 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
     ease: "power2.inOut"
   });
 });
+
+
 
 
 
