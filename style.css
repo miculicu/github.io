@@ -157,7 +157,9 @@ p {
 #heartContainer {
   display: inline-block;
   transform: scale(1);
+  will-change: transform, opacity;
 }
+
 
 /* Heart styling */
 .heart {
@@ -206,6 +208,69 @@ p {
   z-index: 30;
 }
 
+/* Registration form styles */
+#registrationForm {
+  font-family: sans-serif; /* Same font as the rest of your site */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Adds space between questions */
+  margin-top: 20px;
+}
+
+#registrationForm label {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+#registrationForm input[type="text"],
+#registrationForm input[type="email"],
+#registrationForm textarea {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+#registrationForm textarea {
+  min-height: 150px; /* Larger box for program ideas */
+  resize: vertical;
+}
+
+#registrationForm fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#registrationForm fieldset legend {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+#registrationForm button[type="submit"] {
+  background-color: #ff69b4; /* Thematic pink */
+  color: #fff;
+  padding: 1rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#registrationForm button[type="submit"]:hover {
+  background-color: #e0569c; /* Darker pink on hover */
+}
+
+
 /* Responsive Anpassungen */
 @media (max-width: 600px) {
 	
@@ -253,4 +318,16 @@ p {
     left: 50%;
     transform: translate(-50%, -50%);
   }
+  
+  #version-date {
+  position: fixed;
+  top: 4px;
+  right: 4px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-family: sans-serif;
+  font-size: 10px;
+  z-index: 100;
+}
 }

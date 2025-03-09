@@ -23,7 +23,7 @@
 </div>
 
 
-<div id="version-date">Versionsdatum: 5.3.2025<br>Updates:💛💙💚 </div>
+<div id="version-date">Version: 5.3.2025<br>Updates:💖 </div>
 
   <!-- Centered heart container -->
   <div id="heartScreen">
@@ -125,8 +125,27 @@ Bei uns begann alles 2016 im intensiven Mathestudium in Göttingen:
 
 <div id="content-pink" style="display:none;">
   <h2 class="headpink">Zu- und Absagen</h2>
-  <p> Das wird der Anmeldebereich. </p>
+  <form action="https://formspree.io/f/mpwpzazp" method="POST" id="registrationForm">
+    <label for="name">Dein Name/Eure Namen:</label>
+    <input type="text" id="name" name="name" required>
+
+    <fieldset>
+      <legend>Ich/wir kommen zu dem Fest der Liebe:</legend>
+      <label>
+        <input type="radio" name="attendance" value="ja" required> Ja
+      </label>
+      <label>
+        <input type="radio" name="attendance" value="nein" required> Nein
+      </label>
+    </fieldset>
+
+    <label for="program">Wir überlegen uns einen Programmpunkt (Lied, Spiel, Streich, Rede...):</label>
+    <textarea id="program" name="message"></textarea>
+
+    <button type="submit">Absenden</button>
+  </form>
 </div>
+
 
 
   <script src="script.js"></script>

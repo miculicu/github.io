@@ -1,9 +1,8 @@
-
 /********* GLOBAL STATE *********/
 let isHovered = false;
 let animationStarted = false;
 
-/********* COOKIE-FUNKTIONEN *********/
+/********* COOKIE FUNCTIONS *********/
 function setCookie(cname, cvalue, exdays) {
   const d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -27,14 +26,13 @@ function getCookie(cname) {
   return "";
 }
 
-/********* VERSIONSDATUM ERMITTELN *********/
-// Wir gehen davon aus, dass im Element "#version-date" der Text im Format "Versionsdatum: 4.3.2025" steht.
+/********* VERSION DATE *********/
+// Assuming the #version-date element contains text like "Version: 5.3.2025"
 const versionText = document.getElementById("version-date").textContent;
-const versionDate = versionText.replace("Versionsdatum:", "").trim();
+const versionDate = versionText.replace("Version:", "").trim();
 
-/********* NACHRICHTS-LOGIK *********/
+/********* MESSAGE LOGIC *********/
 function showHeartMessage() {
-  // Hole den gespeicherten Wert aus dem Cookie
   const lastClick = getCookie("lastHeartClick");
   let message;
   if (lastClick === versionDate) {
@@ -43,12 +41,12 @@ function showHeartMessage() {
     message = "Klick auf das Herz. Es gibt neue Sachen zu entdecken!";
   }
   
-  // Erstelle das Nachrichten-Element und style es
   const messageElement = document.createElement("div");
   messageElement.id = "heartMessage";
   messageElement.textContent = message;
   messageElement.style.position = "fixed";
-  messageElement.style.top = "85%"; // etwas oberhalb des Herzens
+  messageElement.style.top = "auto";
+  messageElement.style.bottom = "10px";
   messageElement.style.left = "50%";
   messageElement.style.transform = "translateX(-50%)";
   messageElement.style.fontSize = "18px";
@@ -61,17 +59,12 @@ function showHeartMessage() {
   document.body.appendChild(messageElement);
 }
 
-// Zeige die Nachricht, sobald der DOM geladen ist
-document.addEventListener("DOMContentLoaded", showHeartMessage);
-
-
 function showRubrikenMessage() {
-  // Erstelle das Nachrichten-Element
   const rubMessage = document.createElement("div");
   rubMessage.id = "rubrikenMessage";
   rubMessage.textContent = "Klicke die Herzchen an, um die Rubriken zu entdecken!";
   rubMessage.style.position = "fixed";
-  rubMessage.style.top = "85%"; // ähnlich wie beim Eingangs-Herz
+  rubMessage.style.top = "85%";
   rubMessage.style.left = "50%";
   rubMessage.style.transform = "translateX(-50%)";
   rubMessage.style.fontSize = "18px";
@@ -110,19 +103,22 @@ document.getElementById("heartScreen").addEventListener("mouseleave", () => {
 });
 
 /********* CLOUD ANIMATIONS *********/
-const cloudEmojis = ["☁️", "🌥️"];
+// Define two sets of cloud emojis: default and rainy clouds
+const defaultClouds = ["☁️", "🌥️"];
+const rainyClouds = ["🌧️"];
+// Start with default clouds
+let currentClouds = defaultClouds;
 
 function spawnCloud() {
-  // Wenn der Tab nicht aktiv ist, überprüfe erneut in 1 Sekunde
   if (document.hidden) {
     setTimeout(spawnCloud, 1000);
     return;
   }
   
-  // Erstelle und style die Wolke wie bisher
   const cloud = document.createElement("div");
   cloud.classList.add("cloud");
-  cloud.textContent = cloudEmojis[Math.floor(Math.random() * cloudEmojis.length)];
+  // Use currentClouds array for the cloud emoji
+  cloud.textContent = currentClouds[Math.floor(Math.random() * currentClouds.length)];
   cloud.style.position = "absolute";
   cloud.style.top = (Math.random() * 70 + 10) + "vh";
   cloud.style.fontSize = (Math.random() * 20 + 30) + "px";
@@ -139,8 +135,8 @@ function spawnCloud() {
     endX = -100;
     cloud.style.left = startX + "px";
   }
+  
   let duration = Math.random() * 20 + 20;
- 
   gsap.to(cloud, {
     x: endX - startX,
     duration: duration,
@@ -150,30 +146,26 @@ function spawnCloud() {
   gsap.fromTo(cloud, {opacity: 0}, {opacity: 1, duration: 0.5, ease: "power1.in"});
   gsap.to(cloud, {opacity: 0, delay: duration - 3, duration: 3, ease: "power1.out"});
   
-  // Starte den nächsten Cloud-Spawning mit einer zufälligen Verzögerung
-  const nextDelay = (Math.random() * 2000 + 1000);
+  const nextDelay = Math.random() * 2000 + 1000;
   setTimeout(spawnCloud, nextDelay);
 }
-
 spawnCloud();
 
-
-// Global variable to hold the current message container
-// Global variable to hold the static message container
+/********* ADDITIONAL ELEMENTS *********/
 let staticMessageContainer = null;
-// Funktion, die die zusätzlichen Elemente (z. B. Logo und Rand-Herzen) einblendet
+
 function showAdditionalElements() {
-  // Blende das Logo ein (z. B. mit einer kleinen Verzögerung)
+  // Fade in the logo
   gsap.to("#logo", { opacity: 1, duration: 1, ease: "power1.in", delay: 0.1 });
   
-  // Erstelle die Rand-Herzen und blende sie ein
+  // Data for the side hearts (emoji, vertical position, background color, and associated content)
   const heartsData = [
-    { emoji: "💛", top: "20%", color: "#ffff00", lightColor: "#ffffe0", contentId: "content-yellow" },
-    { emoji: "💙", top: "40%", color: "#0000ff", lightColor: "#add8e6", contentId: "content-blue" },
-    { emoji: "💚", top: "80%", color: "#00ff00", lightColor: "#90ee90", contentId: "content-green" },
-    { emoji: "💖", top: "60%", color: "#ff69b4", lightColor: "#ffc0cb", contentId: "content-pink" }
+    { emoji: "💛", top: "20%", lightColor: "#fff3b8", contentId: "content-yellow" },
+    { emoji: "💙", top: "40%", lightColor: "#b3e0ff", contentId: "content-blue" },
+    { emoji: "💚", top: "80%", lightColor: "#b3e6b3", contentId: "content-green" },
+    { emoji: "💖", top: "60%", lightColor: "#ffb3e6", contentId: "content-pink" }
   ];
-
+  
   heartsData.forEach((data) => {
     const leftHeart = document.createElement("div");
     leftHeart.textContent = data.emoji;
@@ -186,10 +178,8 @@ function showAdditionalElements() {
     leftHeart.style.opacity = "0"; // Start hidden for fade-in
     document.body.appendChild(leftHeart);
     
-    // Einblende-Effekt für das Rand-Herz
     gsap.to(leftHeart, { opacity: 1, duration: 1, ease: "power1.in", delay: 0.2 });
-
-    // Hover-Effekte
+    
     leftHeart.addEventListener("mouseenter", () => {
       gsap.to(leftHeart, { scale: 1.5, duration: 0.3, ease: "power1.out" });
     });
@@ -197,9 +187,7 @@ function showAdditionalElements() {
       gsap.to(leftHeart, { scale: 1, duration: 0.3, ease: "power1.out" });
     });
     
-    // Klick-Funktionalität des Rand-Herzens
     leftHeart.addEventListener("click", () => {
-      // Beispiel: Anzeige eines statischen Nachrichten-Containers
       if (!staticMessageContainer) {
         staticMessageContainer = document.createElement("div");
         staticMessageContainer.id = "staticMessageContainer";
@@ -221,12 +209,59 @@ function showAdditionalElements() {
       
       const contentEl = document.getElementById(data.contentId);
       if (contentEl) {
-        staticMessageContainer.innerHTML = contentEl.innerHTML;
+        // For the pink heart, check if the form has already been submitted
+        if (data.contentId === "content-pink" && document.cookie.indexOf("formSubmitted=true") !== -1) {
+          staticMessageContainer.innerHTML = "<p>Danke! Du hast das Anmeldeformular ausgefüllt</p>";
+        } else {
+          staticMessageContainer.innerHTML = contentEl.innerHTML;
+        }
       } else {
         staticMessageContainer.innerHTML = `<p>Error: Content not found</p>`;
       }
       
-      // Beispielhafter Hintergrundfarben-Wechsel
+      // Always reset scroll position to the top
+      staticMessageContainer.scrollTop = 0;
+      
+      // If this is the pink heart (registration form), attach event listeners
+      if (data.contentId === "content-pink" && document.cookie.indexOf("formSubmitted=true") === -1) {
+        const regForm = staticMessageContainer.querySelector("#registrationForm");
+        if (regForm) {
+          // Change event: adjust background and cloud type based on attendance
+          regForm.addEventListener("change", function() {
+            const attendance = regForm.elements["attendance"].value;
+            if (attendance === "nein") {
+              currentClouds = rainyClouds;
+              gsap.to(document.body, { backgroundColor: "#808080", duration: 2, ease: "power2.inOut" });
+            } else if (attendance === "ja") {
+              currentClouds = defaultClouds;
+              gsap.to(document.body, { backgroundColor: "#ffc0cb", duration: 2, ease: "power2.inOut" });
+            }
+          });
+          // Submit event: send the form via AJAX and set a cookie on success
+          regForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const formData = new FormData(regForm);
+            fetch(regForm.action, {
+              method: regForm.method,
+              headers: {
+                'Accept': 'application/json'
+              },
+              body: formData
+            }).then(response => {
+              if(response.ok) {
+                setCookie("formSubmitted", "true", 365);
+                staticMessageContainer.innerHTML = "<p>Du hast das Anmeldeformular bereits ausgefüllt</p>";
+              } else {
+                alert("Fehler beim Absenden des Formulars. Bitte versuche es später erneut.");
+              }
+            }).catch(error => {
+              alert("Fehler beim Absenden des Formulars. Bitte versuche es später erneut.");
+            });
+          });
+        }
+      }
+      
+      // Animate background color based on the heart's assigned light color
       gsap.to(document.body, {
         backgroundColor: data.lightColor,
         duration: 2,
@@ -236,15 +271,14 @@ function showAdditionalElements() {
   });
 }
 
-// Modifizierte Event-Listener-Funktion für das große Herz:
+/********* BIG HEART CLICK EVENT *********/
 document.getElementById("heartScreen").addEventListener("click", (e) => {
   if (animationStarted) return;
   animationStarted = true;
   
-  // Aktualisiere den Cookie, etc.
+  // Update cookie with the current version date
   setCookie("lastHeartClick", versionDate, 365);
   
-  // Blende die Herz-Nachricht aus (sofern vorhanden)
   gsap.to("#heartMessage", {
     opacity: 0,
     duration: 1,
@@ -255,20 +289,18 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
     }
   });
   
-  // Animation: Großes Herz vergrößern und verblassen lassen
-  gsap.to(heartContainer, {
-    scale: 10,
-    duration: 1.5,
-    ease: "power2.inOut",
-    onComplete: () => {
-      // Verberge das große Herz (falls festivalForm nicht benötigt wird)
-      document.getElementById("heartScreen").style.display = "none";
-      
-      // Jetzt werden die zusätzlichen Elemente (Logo & Rand-Herzen) eingeblendet
-      showAdditionalElements();
-	  showRubrikenMessage();
-    }
-  });
+gsap.to(heartContainer, {
+  scale: 10,
+  duration: 1.5,
+  ease: "power2.inOut",
+  force3D: true, // Hint for hardware acceleration
+  onComplete: () => {
+    document.getElementById("heartScreen").style.display = "none";
+    showAdditionalElements();
+    showRubrikenMessage();
+  }
+});
+
   gsap.to(heart, {
     opacity: 0,
     duration: 1.5,
@@ -276,14 +308,5 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
   });
 });
 
-
-
-
-
-
-
-
-
-
-
-
+/********* DOMContentLoaded *********/
+document.addEventListener("DOMContentLoaded", showHeartMessage);
