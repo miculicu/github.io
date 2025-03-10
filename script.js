@@ -279,9 +279,10 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
   // Update cookie with the current version date
   setCookie("lastHeartClick", versionDate, 365);
   
+  // Fade out the heart message
   gsap.to("#heartMessage", {
     opacity: 0,
-    duration: 1,
+    duration: 0.5,
     ease: "power1.out",
     onComplete: () => {
       const msgEl = document.getElementById("heartMessage");
@@ -289,24 +290,39 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
     }
   });
   
-gsap.to(heartContainer, {
-  scale: 10,
-  duration: 1.5,
-  ease: "power2.inOut",
-  force3D: true, // Hint for hardware acceleration
-  onComplete: () => {
-    document.getElementById("heartScreen").style.display = "none";
-    showAdditionalElements();
-    showRubrikenMessage();
+  // Check if device is likely a smartphone based on viewport width
+  if (window.innerWidth < 600) {
+    // For smartphones: just fade out the heart quickly
+    gsap.to(heart, {
+      opacity: 0,
+      duration: 0.5,
+      ease: "power2.inOut",
+      onComplete: () => {
+        document.getElementById("heartScreen").style.display = "none";
+        showAdditionalElements();
+        showRubrikenMessage();
+      }
+    });
+  } else {
+    // For larger devices: perform the full animation
+    gsap.to(heartContainer, {
+      scale: 10,
+      duration: 1.5,
+      ease: "power2.inOut",
+      onComplete: () => {
+        document.getElementById("heartScreen").style.display = "none";
+        showAdditionalElements();
+        showRubrikenMessage();
+      }
+    });
+    gsap.to(heart, {
+      opacity: 0,
+      duration: 1.5,
+      ease: "power2.inOut"
+    });
   }
 });
 
-  gsap.to(heart, {
-    opacity: 0,
-    duration: 1.5,
-    ease: "power2.inOut"
-  });
-});
 
 /********* DOMContentLoaded *********/
 document.addEventListener("DOMContentLoaded", showHeartMessage);
