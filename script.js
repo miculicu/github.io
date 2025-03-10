@@ -290,9 +290,9 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
     }
   });
   
-  // Check if device is likely a smartphone based on viewport width
-  if (window.innerWidth < 600) {
-    // For smartphones: just fade out the heart quickly
+  // Use matchMedia for a more reliable mobile check
+  if (window.matchMedia("(max-width: 600px)").matches) {
+    // For smartphones: fade out the heart only
     gsap.to(heart, {
       opacity: 0,
       duration: 0.5,
@@ -304,7 +304,7 @@ document.getElementById("heartScreen").addEventListener("click", (e) => {
       }
     });
   } else {
-    // For larger devices: perform the full animation
+    // For larger devices: perform the full scaling and fade animation
     gsap.to(heartContainer, {
       scale: 10,
       duration: 1.5,
