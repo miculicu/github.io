@@ -62,7 +62,7 @@ function showHeartMessage() {
 function showRubrikenMessage() {
   const rubMessage = document.createElement("div");
   rubMessage.id = "rubrikenMessage";
-  rubMessage.textContent = "Klicke die Herzchen an, um die Rubriken zu entdecken!";
+  rubMessage.textContent = "Klicke die verschiedenen Herzchen an!";
   rubMessage.style.position = "fixed";
   messageElement.style.top = "auto";
   messageElement.style.bottom = "10px";
