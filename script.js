@@ -64,7 +64,8 @@ function showRubrikenMessage() {
   rubMessage.id = "rubrikenMessage";
   rubMessage.textContent = "Klicke die Herzchen an, um die Rubriken zu entdecken!";
   rubMessage.style.position = "fixed";
-  rubMessage.style.top = "85%";
+  messageElement.style.top = "auto";
+  messageElement.style.bottom = "10px";
   rubMessage.style.left = "50%";
   rubMessage.style.transform = "translateX(-50%)";
   rubMessage.style.fontSize = "18px";
