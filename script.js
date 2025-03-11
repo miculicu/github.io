@@ -251,7 +251,7 @@ function showAdditionalElements() {
             }).then(response => {
               if(response.ok) {
                 setCookie("formSubmitted", "true", 365);
-                staticMessageContainer.innerHTML = "<p>Du hast das Anmeldeformular bereits ausgefüllt</p>";
+                staticMessageContainer.innerHTML = "<p>Danke! Du hast das Anmeldeformular ausgefüllt</p>";
               } else {
                 alert("Fehler beim Absenden des Formulars. Bitte versuche es später erneut.");
               }
