@@ -163,8 +163,8 @@ function showAdditionalElements() {
 const heartsData = [
   { emoji: "💛", top: "20%", lightColor: "#fff3b8", contentId: "content-yellow", label: "Erklärung" },
   { emoji: "💙", top: "40%", lightColor: "#b3e0ff", contentId: "content-blue",    label: "Ort&Ablauf" },
-  { emoji: "💚", top: "60%", lightColor: "#b3e6b3", contentId: "content-green",   label: "Zu-&Absagen" },
-  { emoji: "💖", top: "80%", lightColor: "#ffb3e6", contentId: "content-pink",    label: "Programm" }
+  { emoji: "💚", top: "60%", lightColor: "#b3e6b3", contentId: "content-green",   label: "Programm" },
+  { emoji: "💖", top: "80%", lightColor: "#ffb3e6", contentId: "content-pink",    label: "Zu-&Absagen" }
 ];
 
   
@@ -192,7 +192,7 @@ const heartsData = [
     const label = document.createElement("span");
     label.textContent     = data.label;
     label.style.marginLeft  = "8px";           // space between icon & text
-    label.style.fontSize    = "22px";          // adjust to taste
+    label.style.fontSize    = "28px";          // adjust to taste
     label.style.fontWeight = "bold";
     label.style.color       = data.lightColor; // same pastel you already have
     label.style.webkitTextStroke = "0.5px black";
