@@ -174,6 +174,8 @@ const heartsData = [
     leftHeart.style.position = "fixed";
     leftHeart.style.left = "10px";
     leftHeart.style.top = data.top;
+    leftHeart.style.display    = "inline-flex";    // <-- so emoji + text sit side by side
+    leftHeart.style.alignItems = "center";
     leftHeart.style.fontSize = "40px";
     leftHeart.style.cursor = "pointer";
     leftHeart.style.zIndex = "15";
@@ -184,7 +186,7 @@ const heartsData = [
     const icon = document.createElement("span");
     icon.textContent      = data.emoji;
     icon.style.fontSize   = "40px";
-    heartWrapper.appendChild(icon);
+    leftHeart.appendChild(icon);
 
     // the label
     const label = document.createElement("span");
@@ -192,7 +194,7 @@ const heartsData = [
     label.style.marginLeft  = "8px";           // space between icon & text
     label.style.fontSize    = "18px";          // adjust to taste
     label.style.color       = data.lightColor; // same pastel you already have
-    heartWrapper.appendChild(label);
+    leftHeart.appendChild(label);
 
     gsap.to(leftHeart, { opacity: 1, duration: 1, ease: "power1.in", delay: 0.2 });
     
