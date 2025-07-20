@@ -36,9 +36,9 @@ function showHeartMessage() {
   const lastClick = getCookie("lastHeartClick");
   let message;
   if (lastClick === versionDate) {
-    message = "Klick auf das Herz, um mehr zu erfahren!";
+    message = "Klick auf das Herz, um mehr zu erfahren! Tipp: Am besten läuft die Website an einem Desktop-PC";
   } else {
-    message = "Klick auf das Herz. Es gibt neue Sachen zu entdecken!";
+    message = "Klick auf das Herz. Es gibt neue Sachen zu entdecken! Tipp: Am besten läuft die Website an einem Desktop-PC";
   }
   
   const messageElement = document.createElement("div");
