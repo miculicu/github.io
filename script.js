@@ -162,9 +162,9 @@ function showAdditionalElements() {
   // Data for the side hearts (emoji, vertical position, background color, and associated content)
 const heartsData = [
   { emoji: "💛", top: "20%", lightColor: "#fff3b8", contentId: "content-yellow", label: "Erklärung" },
-  { emoji: "💙", top: "40%", lightColor: "#b3e0ff", contentId: "content-blue",    label: "Ablauf" },
-  { emoji: "💚", top: "80%", lightColor: "#b3e6b3", contentId: "content-green",   label: "Zu-&Absagen" },
-  { emoji: "💖", top: "60%", lightColor: "#ffb3e6", contentId: "content-pink",    label: "Weiteres" }
+  { emoji: "💙", top: "40%", lightColor: "#b3e0ff", contentId: "content-blue",    label: "Ort&Ablauf" },
+  { emoji: "💚", top: "60%", lightColor: "#b3e6b3", contentId: "content-green",   label: "Zu-&Absagen" },
+  { emoji: "💖", top: "80%", lightColor: "#ffb3e6", contentId: "content-pink",    label: "Programm" }
 ];
 
   
