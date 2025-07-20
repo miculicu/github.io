@@ -1,24 +1,11 @@
-/* Global reset and styling for html and body */
-/* Basic list styling inside hidden content sections */
-#content-green ul,
-#content-blue ul,
-#content-yellow ul,
-#content-pink ul {
-  max-width: 800px;
-  margin: 0 auto 40px auto; /* match <p> spacing */
-  padding-left: 20px;       /* space for bullets */
-  list-style-type: disc;    /* standard bullet */
-  text-align: justify
-}
 
-#content-green li,
-#content-blue li,
-#content-yellow li,
-#content-pink li {
+li {
+  max-width: 800px
   font-size: 1.1em;
-  margin-bottom: 10px;
-  color: #1ee20d;              /* match your body text color */
+  margin: 0 auto 40px auto;
+  margin-bottom: 10px;          
   line-height: 1.5;
+  text-align: justify
 }
 
 
