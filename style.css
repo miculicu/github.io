@@ -5,9 +5,10 @@
 #content-yellow ul,
 #content-pink ul {
   max-width: 800px;
-  margin: 0 auto 30px auto; /* match <p> spacing */
+  margin: 0 auto 40px auto; /* match <p> spacing */
   padding-left: 20px;       /* space for bullets */
   list-style-type: disc;    /* standard bullet */
+  text-align: justify
 }
 
 #content-green li,
@@ -16,7 +17,7 @@
 #content-pink li {
   font-size: 1.1em;
   margin-bottom: 10px;
-  color: #333;              /* match your body text color */
+  color: #1ee20d;              /* match your body text color */
   line-height: 1.5;
 }
 
