@@ -160,16 +160,17 @@ function showAdditionalElements() {
   gsap.to("#logo", { opacity: 1, duration: 1, ease: "power1.in", delay: 0.1 });
   
   // Data for the side hearts (emoji, vertical position, background color, and associated content)
-  const heartsData = [
-    { emoji: "💛", top: "20%", lightColor: "#fff3b8", contentId: "content-yellow" },
-    { emoji: "💙", top: "40%", lightColor: "#b3e0ff", contentId: "content-blue" },
-    { emoji: "💚", top: "80%", lightColor: "#b3e6b3", contentId: "content-green" },
-    { emoji: "💖", top: "60%", lightColor: "#ffb3e6", contentId: "content-pink" }
-  ];
+const heartsData = [
+  { emoji: "💛", top: "20%", lightColor: "#fff3b8", contentId: "content-yellow", label: "Erklärung" },
+  { emoji: "💙", top: "40%", lightColor: "#b3e0ff", contentId: "content-blue",    label: "Orientierung" },
+  { emoji: "💚", top: "80%", lightColor: "#b3e6b3", contentId: "content-green",   label: "Info" },
+  { emoji: "💖", top: "60%", lightColor: "#ffb3e6", contentId: "content-pink",    label: "Kontakt" }
+];
+
   
   heartsData.forEach((data) => {
     const leftHeart = document.createElement("div");
-    leftHeart.textContent = data.emoji;
+    //leftHeart.textContent = data.emoji;
     leftHeart.style.position = "fixed";
     leftHeart.style.left = "10px";
     leftHeart.style.top = data.top;
@@ -179,8 +180,23 @@ function showAdditionalElements() {
     leftHeart.style.opacity = "0"; // Start hidden for fade-in
     document.body.appendChild(leftHeart);
     
+      // the emoji
+    const icon = document.createElement("span");
+    icon.textContent      = data.emoji;
+    icon.style.fontSize   = "40px";
+    heartWrapper.appendChild(icon);
+
+    // the label
+    const label = document.createElement("span");
+    label.textContent     = data.label;
+    label.style.marginLeft  = "8px";           // space between icon & text
+    label.style.fontSize    = "18px";          // adjust to taste
+    label.style.color       = data.lightColor; // same pastel you already have
+    heartWrapper.appendChild(label);
+
     gsap.to(leftHeart, { opacity: 1, duration: 1, ease: "power1.in", delay: 0.2 });
     
+
     leftHeart.addEventListener("mouseenter", () => {
       gsap.to(leftHeart, { scale: 1.5, duration: 0.3, ease: "power1.out" });
     });
