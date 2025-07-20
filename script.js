@@ -192,8 +192,10 @@ const heartsData = [
     const label = document.createElement("span");
     label.textContent     = data.label;
     label.style.marginLeft  = "8px";           // space between icon & text
-    label.style.fontSize    = "18px";          // adjust to taste
+    label.style.fontSize    = "22px";          // adjust to taste
+    label.style.fontWeight = "bold";
     label.style.color       = data.lightColor; // same pastel you already have
+    label.style.webkitTextStroke = "0.5px black";
     leftHeart.appendChild(label);
 
     gsap.to(leftHeart, { opacity: 1, duration: 1, ease: "power1.in", delay: 0.2 });
